@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import cl.microshin.micro.model.User;
 import cl.microshin.micro.repo.IRepoUser;
+import cl.microshin.micro.service.ImpUS;
 
 @RestController
 public class UserRestController {
@@ -21,6 +22,8 @@ public class UserRestController {
     @Autowired
     private IRepoUser Repo;
 
+    @Autowired
+    private ImpUS Serv;
 
     /* Metodos api:
         GET: Resive datos.
@@ -45,36 +48,7 @@ public class UserRestController {
     //Desde acá podemos tomar algunos requerimientos y adaptarlos.
     @PostMapping("/IngresoU")
     public String IngresoUsuario(@RequestBody User Usuario){
-        String Message = "";  
-        if (Usuario.getEdad()<18){
-            Message = "No se permite el ingreso a menores de edad";
-        } else if (Usuario.getEdad() >= 18){
-            //Requerimiento de Nombre de usuario.
-            String UN = Usuario.getNombre(); //Toma el nombre
-            char UN1 = UN.charAt(0); //Le saca una letra, en este caso la primera.
-            String UA = Usuario.getApellido(); //Toma el apellido.
-            char[] UA6 = UA.toCharArray(); //Le saca todas las letras y las divide en un arreglo.
-            String UAN = "";
-            for (int L = 0; L <= UA.length()-1;L++){
-                if(UAN.length() < 6){ //Comprueba si la variable es menor que 6.
-                    UAN = UAN.concat(Character.toString(UA6[L])); //Ingresa a la variable concatenando una letra del arreglo.
-                }
-            }
-            String UFinal = UN1+UAN; //Ingresa el valor de las 2 variables en una.
-            // ---- Busqueda de usuario repetido --- 
-            String Mess = "";
-            User Data;
-            List<User> User = Repo.findAll();
-            for (int U = 0; U <= User.size(); U++){
-                Data = User.get(U);
-                Mess = Mess.concat(Data.getApellido()); 
-            }
-            //---------------------------------------
-            Usuario.setUsuario(UFinal.toUpperCase()); //Ingresa al usuario la variable final en minusculas.
-            Usuario.setContraseña("12345678"); //Requerimiento de contraseña.
-            Repo.save(Usuario);
-            Message = "El usuario "+UFinal.toUpperCase()+" se ha ingresado con exito.";
-        }
+        String Message = Serv.NCV(Usuario);
         return Message;
     }
 
@@ -97,7 +71,8 @@ public class UserRestController {
 
     //Actualiza un dato existente en la base de datos desde un JSON RAW que contiene todas las columnas.
     @PutMapping("/ActualizarDA")
-    public void ActualizarDA(@RequestBody User Usuario ){
-        Repo.save(Usuario);
+    public String ActualizarDA(@RequestBody User Usuario ){
+        String Message = Serv.PMR(Usuario);
+        return Message;
     }
 }

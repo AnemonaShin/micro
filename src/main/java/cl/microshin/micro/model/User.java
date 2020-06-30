@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor @Data
 public class User {
 
-    @Id @Column(precision = 1) //Asignamos variable como ID de la clase y a su ves designamos que su valor inicial es el 1.
+    @Id @Column(precision = 1, name = "Id_U") //Asignamos variable como ID de la clase y a su ves designamos que su valor inicial es el 1.
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Estrategia de generacion de valor, en este caso al ser un ID, es clave primaria y auto-incrementable.
     private int ID;
     @Column(length = 25, nullable = false)
@@ -28,11 +28,21 @@ public class User {
     @Column(length = 25, nullable = false)
     private String Apellido;
     
+    @Column(length = 12, nullable = false, name = "R_U")
+    private String Rut;
+    
     @Column(nullable = false)
     private int Edad;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false, name = "U_Email")
+    private String Email;
+
+    @Column(nullable = false, name = "N_Telefono")
+    private int Numero;
+
+    @Column(length = 50, nullable = false, name = "Nick_U")
     private String Usuario;
+
     @Column(length = 8, nullable = false)
     private String Contraseña;
 }

@@ -53,6 +53,14 @@ public class ImpUS implements IUS {
             Usuario.setUsuario(Nick.toUpperCase());
             // De momento requerimiento de contraseña.
             Usuario.setContraseña("12345678");
+            // ---------------------------------------
+            /* Arreglo numero, 569 + Numero_Usuario
+            String Numero = String.valueOf(Usuario.getNumero());
+            String Agregado = String.valueOf(569);
+            String FA = Agregado+Numero;
+            int RFA = Integer.parseInt(FA);
+            Usuario.setNumero(RFA);
+            //-----------------------------------------*/
             Repo.save(Usuario);
             Message = "Usuario " + Nick.toUpperCase() + " ingresado con exito.";
         }
